@@ -1,4 +1,4 @@
-import CardWrapper from "@/components/auth/CardWrapper";
+import CardWrapper from "@/components/auth/card-wrapper";
 
 const LoginPage = () => {
   return (
