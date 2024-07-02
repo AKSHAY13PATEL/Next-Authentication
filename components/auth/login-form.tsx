@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import CardWrapper from "@/components/auth/card-wrapper";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
+import { login } from "@/actions/login";
 
 type LoginType = z.infer<typeof LoginSchema>;
 
@@ -31,10 +32,16 @@ const LoginForm = () => {
       password: "",
     },
   });
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
 
   const onSubmit: SubmitHandler<LoginType> = (data) => {
-    console.log(data);
-    router.push("/dashboard");
+    login(data).then((data) => {
+      setError(data.error);
+      setSuccess(data.success);
+    });
+
+    // router.push("/dashboard");
   };
 
   return (
@@ -82,8 +89,8 @@ const LoginForm = () => {
               }}
             ></FormField>
           </div>
-          <FormError message="" />
-          <FormSuccess message="" />
+          <FormError message={error} />
+          <FormSuccess message={success} />
           <Button size={"sm"} className="w-full" type="submit">
             Submit
           </Button>
