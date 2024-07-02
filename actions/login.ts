@@ -10,7 +10,5 @@ export const login = async (formData: z.infer<typeof LoginSchema>) => {
     return { error: "Invalid fields!" };
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-
   return { success: "Email sent!" };
 };
