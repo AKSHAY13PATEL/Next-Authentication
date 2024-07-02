@@ -11,7 +11,7 @@ const FormSuccess = ({ message }: Props) => {
   return (
     <div className="w-full p-2 bg-emerald-500/15 text-emerald-500 flex gap-x-2 text-sm rounded-md">
       <IoCloudDoneOutline className="w-5 h-5" />
-      FormSuccess
+      {message}
     </div>
   );
 };
