@@ -1,14 +1,40 @@
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
-
+import {
+  publicRoutes,
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  authRoute,
+} from "@/route";
+import { NextResponse } from "next/server";
 const { auth } = NextAuth(authConfig);
 
 // no need for wrapping middleware funciton with auth,
 // we can export direct "middleware" (no other name) function or default function
 export default auth((req) => {
-  const isLoggedIn = !!req.auth;
-  console.log("Is logged in :", isLoggedIn);
-  console.log("Route :", req.nextUrl.pathname);
+  const { nextUrl, auth } = req;
+  const isLoggedIn = !!auth;
+
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoute.includes(nextUrl.pathname);
+
+  if (isApiAuthRoute) {
+    return NextResponse.next();
+  }
+
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return NextResponse.next();
+  }
+
+  if (!isLoggedIn && !isPublicRoute) {
+    return NextResponse.redirect(new URL("/auth/login", nextUrl));
+  }
+
+  return NextResponse.next();
 });
 
 export const config = {
