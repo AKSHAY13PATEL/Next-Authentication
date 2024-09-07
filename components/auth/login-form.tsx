@@ -37,8 +37,8 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<LoginType> = (data) => {
     login(data).then((data) => {
-      setError(data.error);
-      setSuccess(data.success);
+      setError(data?.error);
+      setSuccess(data?.success);
     });
 
     // router.push("/dashboard");
