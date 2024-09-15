@@ -20,12 +20,10 @@ export default {
             throw new CredentialsSignin("Validation of credentials failed");
           }
 
-          console.log("before");
           const isPasswordMatched = await bcryptjs.compare(
             password,
             user.password
           );
-          console.log("after", isPasswordMatched);
           if (isPasswordMatched) {
             return user;
           }

@@ -1,12 +1,11 @@
-import { signOut } from "@/auth";
-import { Button } from "@/components/ui/button";
-import { Form, FormItem } from "@/components/ui/form";
-import React from "react";
+import { auth, signOut } from "@/auth";
 
-const DashboardPage = () => {
+const DashboardPage = async () => {
+  const session = await auth();
   return (
     <>
       <div>DashboardPage</div>
+      <div>{JSON.stringify(session)}</div>
       <div>
         <form
           action={async () => {
