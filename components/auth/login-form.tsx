@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import { login } from "@/actions/login";
@@ -34,6 +34,11 @@ const LoginForm = () => {
   });
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email provided is already linked with other account"
+      : "";
 
   const onSubmit: SubmitHandler<LoginType> = (data) => {
     login(data).then((data) => {
@@ -89,7 +94,7 @@ const LoginForm = () => {
               }}
             ></FormField>
           </div>
-          <FormError message={error} />
+          <FormError message={error || urlError} />
           <FormSuccess message={success} />
           <Button size={"sm"} className="w-full" type="submit">
             Submit

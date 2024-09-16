@@ -7,7 +7,11 @@ export const publicRoutes: string[] = ["/"];
  * Array of route used for authentication
  * These routes will redirect logged in user to dashboard page
  */
-export const authRoute: string[] = ["/auth/login", "/auth/register"];
+export const authRoute: string[] = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/error",
+];
 
 /**
  * The prefix for api authentication routes
