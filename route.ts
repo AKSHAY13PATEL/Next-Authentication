@@ -1,7 +1,7 @@
 /**
  * Array of route accessible for public
  */
-export const publicRoutes: string[] = ["/"];
+export const publicRoutes: string[] = ["/", "/auth/new-verification"];
 
 /**
  * Array of route used for authentication
