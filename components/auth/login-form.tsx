@@ -20,6 +20,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import { login } from "@/actions/login";
+import Link from "next/link";
 
 type LoginType = z.infer<typeof LoginSchema>;
 
@@ -89,6 +90,14 @@ const LoginForm = () => {
                       <Input type="password" placeholder="******" {...field} />
                     </FormControl>
                     <FormMessage />
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="px-0 font-normal"
+                      asChild
+                    >
+                      <Link href="/auth/reset">Forget password</Link>
+                    </Button>
                   </FormItem>
                 );
               }}

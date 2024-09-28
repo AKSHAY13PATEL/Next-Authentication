@@ -14,3 +14,13 @@ export const RegisterSchema = z.object({
     .string()
     .min(3, { message: "Username should be at least 3 character long!" }),
 });
+
+export const ResetSchema = z.object({
+  email: z.string().email(),
+});
+
+export const NewPasswordSchema = z.object({
+  password: z
+    .string()
+    .min(6, { message: "Password should be at least 6 character long" }),
+});
