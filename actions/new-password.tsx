@@ -47,9 +47,9 @@ export const newPassword = async (
     data: { password: hashedPassword },
   });
 
-  //   await db.passwordResetToken.delete({
-  //     where: { id: exsistingResetPasswordToken.id },
-  //   });
+  await db.passwordResetToken.delete({
+    where: { id: exsistingResetPasswordToken.id },
+  });
 
   return { success: "Email verified" };
 };
