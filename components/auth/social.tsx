@@ -1,10 +1,9 @@
 "use client";
 
-import React from "react";
-import { FaGoogle, FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
-import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/route";
+import { signIn } from "next-auth/react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
 const Social = () => {
   const onClick = async (provider: "google" | "github") => {

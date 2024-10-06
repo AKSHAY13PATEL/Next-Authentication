@@ -1,9 +1,9 @@
 import { getPasswordResetTokenByEmail } from "@/data/password-reset-token";
+import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 import { getVerificationTokenByEmail } from "@/data/verification-token";
+import crypto from "crypto";
 import { v4 as uuid4 } from "uuid";
 import { db } from "./db";
-import crypto from "crypto";
-import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 
 export const generateVerificationToken = async (email: string) => {
   const existingToken = await getVerificationTokenByEmail(email);

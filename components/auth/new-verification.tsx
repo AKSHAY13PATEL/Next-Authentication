@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import CardWrapper from "./card-wrapper";
-import { SyncLoader } from "react-spinners";
-import { useSearchParams } from "next/navigation";
 import { verifyNewToken } from "@/actions/new-verification";
-import FormSuccess from "../form-success";
+import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { SyncLoader } from "react-spinners";
 import FormError from "../form-error";
+import FormSuccess from "../form-success";
+import CardWrapper from "./card-wrapper";
 
 const NewVerificationForm = () => {
   const params = useSearchParams();

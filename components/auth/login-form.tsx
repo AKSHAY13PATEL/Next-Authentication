@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useTransition, useState } from "react";
+import { login } from "@/actions/login";
 import CardWrapper from "@/components/auth/card-wrapper";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "@/schemas";
-import { z } from "zod";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormMessage,
-  FormLabel,
-  FormControl,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
-import { login } from "@/actions/login";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { LoginSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState, useTransition } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 
 type LoginType = z.infer<typeof LoginSchema>;
 
