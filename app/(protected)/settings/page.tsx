@@ -2,8 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
-import { revalidateTag } from "next/cache";
-import React, { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { settings } from "@/actions/settings";
@@ -31,8 +30,9 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { SettingsSchema } from "@/schemas";
-import { z } from "zod";
 import { UserRole } from "@prisma/client";
+import { z } from "zod";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 type SettingsType = z.infer<typeof SettingsSchema>;
 
@@ -55,24 +55,36 @@ const SettingsPage = () => {
     },
   });
 
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        name: user.name || "",
+        email: user.email || "",
+        role: user.role || undefined,
+        isTwoFactorEnabled: !!user.isTwoFactorEnabled || false,
+        password: undefined,
+        newPassword: undefined,
+      });
+    }
+  }, [user]);
+
   const onSubmit: SubmitHandler<SettingsType> = (formData) => {
     startTransition(() => {
       settings(formData)
         .then((data) => {
           if (data.error) {
             setError(data.error);
+            setSuccess("");
           }
 
           if (data.success) {
             setSuccess(data.success);
+            setError("");
             update();
-            // if server component does not reflect changes after update due to caching of server component
-            // we can use revalidateTag or revalidatePath to force the re-render of server component by invalidating the cache
-            revalidateTag("user-data-server");
           }
         })
         .catch((err) => {
-          console.log("Something went wrong while updating");
+          console.log("Something went wrong while updating", err);
         });
     });
   };
@@ -232,7 +244,14 @@ const SettingsPage = () => {
               <FormError message={error || ""} />
             </div>
             <Button type="submit" disabled={isPending}>
-              Update
+              {isPending ? (
+                <>
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  Updating
+                </>
+              ) : (
+                "Update"
+              )}
             </Button>
           </form>
         </Form>
