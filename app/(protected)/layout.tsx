@@ -11,8 +11,10 @@ const ProtectedLayout = ({ children }: Props) => {
       className="h-full w-full flex flex-col gap-y-10 items-center 
         justify-center bg-gradient-to-r from-indigo-500 to-emerald-500"
     >
-      <Navbar />
-      {children}
+      <div className="flex-initial mt-2">
+        <Navbar />
+      </div>
+      <div className="flex-1">{children}</div>{" "}
     </div>
   );
 };
