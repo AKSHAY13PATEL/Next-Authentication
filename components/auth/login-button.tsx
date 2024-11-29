@@ -15,6 +15,7 @@ const LoginButton = ({ children, mode = "redirect", asChild }: Props) => {
   const router = useRouter();
 
   const onClick = () => {
+    console.log("sign in button clicked");
     router.push("/auth/login");
   };
 
