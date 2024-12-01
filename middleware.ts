@@ -12,7 +12,6 @@ const { auth } = NextAuth(authConfig);
 // no need for wrapping middleware funciton with auth,
 // we can export direct "middleware" (no other name) function or default function
 export default auth((req) => {
-  console.log("middleware called");
   const { nextUrl, auth } = req;
   const isLoggedIn = !!auth;
 
@@ -26,10 +25,8 @@ export default auth((req) => {
 
   if (isAuthRoute) {
     if (isLoggedIn) {
-      console.log("logged in and auth route");
       return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    console.log("auth route without login");
     return NextResponse.next();
   }
 
