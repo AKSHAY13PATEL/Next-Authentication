@@ -66,7 +66,7 @@ const SettingsPage = () => {
         newPassword: undefined,
       });
     }
-  }, [user]);
+  }, [user, form]);
 
   const onSubmit: SubmitHandler<SettingsType> = (formData) => {
     startTransition(() => {
