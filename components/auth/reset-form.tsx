@@ -16,13 +16,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { ResetSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
 type ResetType = z.infer<typeof ResetSchema>;
 
 const ResetForm = () => {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<ResetType>({
     resolver: zodResolver(ResetSchema),
     defaultValues: {
@@ -33,9 +35,11 @@ const ResetForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
 
   const onSubmit: SubmitHandler<ResetType> = (data) => {
-    resetPassword(data).then((data) => {
-      setSuccess(data.success);
-      setError(data.error);
+    startTransition(() => {
+      resetPassword(data).then((data) => {
+        setSuccess(data.success);
+        setError(data.error);
+      });
     });
   };
 
@@ -65,7 +69,14 @@ const ResetForm = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button size={"sm"} className="w-full" type="submit">
-            Reset Password
+            {isPending ? (
+              <>
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait...
+              </>
+            ) : (
+              "Reset Password"
+            )}
           </Button>
         </form>
       </Form>

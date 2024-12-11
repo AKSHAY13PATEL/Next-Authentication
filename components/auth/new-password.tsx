@@ -16,8 +16,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { NewPasswordSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -35,11 +36,14 @@ const NewPasswordForm = () => {
   });
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
 
   const onSubmit: SubmitHandler<NewPasswordType> = (data) => {
-    newPassword(data, token).then((data) => {
-      setSuccess(data.success);
-      setError(data.error);
+    startTransition(() => {
+      newPassword(data, token).then((data) => {
+        setSuccess(data.success);
+        setError(data.error);
+      });
     });
   };
 
@@ -69,7 +73,14 @@ const NewPasswordForm = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button size={"sm"} className="w-full" type="submit">
-            Reset Password
+            {isPending ? (
+              <>
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </>
+            ) : (
+              "Reset Password"
+            )}
           </Button>
         </form>
       </Form>

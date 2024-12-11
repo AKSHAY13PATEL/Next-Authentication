@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useTransition } from "react";
@@ -165,7 +166,16 @@ const LoginForm = () => {
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
           <Button size={"sm"} className="w-full" type="submit">
-            {showTwoFactor ? "Confirm" : "Submit"}
+            {/* {showTwoFactor ? "Confirm" : "Submit"} */}
+
+            {isPending ? (
+              <>
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                {showTwoFactor ? "Confirming..." : "Submiting..."}
+              </>
+            ) : (
+              <>{showTwoFactor ? "Confirm" : "Submit"}</>
+            )}
           </Button>
         </form>
       </Form>

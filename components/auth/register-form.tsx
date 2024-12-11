@@ -16,8 +16,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { RegisterSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,6 +26,7 @@ type RegisterType = z.infer<typeof RegisterSchema>;
 
 const RegisterForm = () => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<RegisterType>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -40,9 +42,11 @@ const RegisterForm = () => {
     setError("");
     setSuccess("");
 
-    register(data).then((data) => {
-      setError(data.error);
-      setSuccess(data.success);
+    startTransition(() => {
+      register(data).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
     });
 
     // router.push("/dashboard");
@@ -111,7 +115,14 @@ const RegisterForm = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button size={"sm"} className="w-full" type="submit">
-            Create an account
+            {isPending ? (
+              <>
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                Creating an Account
+              </>
+            ) : (
+              "Create an Account"
+            )}
           </Button>
         </form>
       </Form>
